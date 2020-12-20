@@ -137,7 +137,7 @@ public class ExtraGear extends JavaPlugin implements SlimefunAddon {
 
         researchId++;
 
-        Research research = new Research(new NamespacedKey(this, component.toLowerCase() + "_armor"), researchId, humanizedComponent + " Armor", 5);
+        Research research = new Research(new NamespacedKey(this, component.toLowerCase() + "_armor"), researchId, humanizedComponent + "护甲", 5);
         research.addItems(helmet, chestplate, leggings, boots);
         research.register();
     }
