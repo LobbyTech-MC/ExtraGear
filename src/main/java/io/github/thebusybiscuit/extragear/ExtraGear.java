@@ -19,9 +19,7 @@ import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.cscorelib2.collections.Pair;
-import me.mrCookieSlime.Slimefun.cscorelib2.config.Config;
 import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
-import me.mrCookieSlime.Slimefun.cscorelib2.updater.GitHubBuildsUpdater;
 
 public class ExtraGear extends JavaPlugin implements SlimefunAddon {
 
@@ -30,12 +28,6 @@ public class ExtraGear extends JavaPlugin implements SlimefunAddon {
 
     @Override
     public void onEnable() {
-        Config cfg = new Config(this);
-
-        if (cfg.getBoolean("options.auto-update")) {
-            new GitHubBuildsUpdater(this, getFile(), "LobbyTech-MC/ExtraGear/master").start();
-        }
-
         new Metrics(this, 6469);
 
         category = new Category(new NamespacedKey(this, "items"), new CustomItem(Material.DIAMOND_SWORD, "&6更多装备"), 1);
