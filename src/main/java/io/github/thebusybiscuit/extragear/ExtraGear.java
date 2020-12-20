@@ -33,7 +33,7 @@ public class ExtraGear extends JavaPlugin implements SlimefunAddon {
         Config cfg = new Config(this);
 
         if (cfg.getBoolean("options.auto-update")) {
-            new GitHubBuildsUpdater(this, getFile(), "TheBusyBiscuit/ExtraGear/master").start();
+            new GitHubBuildsUpdater(this, getFile(), "LobbyTech-MC/ExtraGear/master").start();
         }
 
         new Metrics(this, 6469);
