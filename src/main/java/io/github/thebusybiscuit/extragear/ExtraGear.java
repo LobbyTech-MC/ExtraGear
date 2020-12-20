@@ -13,7 +13,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import io.github.thebusybiscuit.slimefun4.core.researching.Research;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
-import io.github.thebusybiscuit.slimefun4.utils.ChatUtils;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
@@ -67,16 +66,17 @@ public class ExtraGear extends JavaPlugin implements SlimefunAddon {
         registerSword(Material.IRON_SWORD, "DAMASCUS_STEEL", SlimefunItems.DAMASCUS_STEEL_INGOT, Arrays.asList(new Pair<>(Enchantment.DAMAGE_ALL, 6), new Pair<>(Enchantment.DURABILITY, 7)));
         registerSword(Material.IRON_SWORD, "HARDENED", SlimefunItems.HARDENED_METAL_INGOT, Arrays.asList(new Pair<>(Enchantment.DAMAGE_ALL, 7), new Pair<>(Enchantment.DURABILITY, 10)));
         registerSword(Material.IRON_SWORD, "REINFORCED", SlimefunItems.REINFORCED_ALLOY_INGOT, Arrays.asList(new Pair<>(Enchantment.DAMAGE_ALL, 8), new Pair<>(Enchantment.DURABILITY, 8)));
-        registerSword(Material.IRON_SWORD, "FERROSILICON", SlimefunItems.FERROSILICON, Arrays.asList(new Pair<>(Enchantment.DAMAGE_UNDEAD, 8), new Pair<>(Enchantment.DURABILITY, 4)));
+        registerSwordNamed(Material.IRON_SWORD, "FERROSILICON", SlimefunItems.FERROSILICON, Arrays.asList(new Pair<>(Enchantment.DAMAGE_UNDEAD, 8), new Pair<>(Enchantment.DURABILITY, 4)));
         registerSword(Material.GOLDEN_SWORD, "GILDED_IRON", SlimefunItems.GILDED_IRON, Arrays.asList(new Pair<>(Enchantment.DAMAGE_ARTHROPODS, 8), new Pair<>(Enchantment.DURABILITY, 10)));
         registerSword(Material.IRON_SWORD, "NICKEL", SlimefunItems.NICKEL_INGOT, Arrays.asList(new Pair<>(Enchantment.DAMAGE_ALL, 6), new Pair<>(Enchantment.DURABILITY, 5)));
 
         registerSword(Material.IRON_SWORD, "COBALT", SlimefunItems.COBALT_INGOT, Arrays.asList(new Pair<>(Enchantment.DAMAGE_ALL, 7), new Pair<>(Enchantment.DURABILITY, 7)));
         registerArmor(ArmorSet.IRON, "COBALT", SlimefunItems.COBALT_INGOT, Arrays.asList(new Pair<>(Enchantment.PROTECTION_ENVIRONMENTAL, 7), new Pair<>(Enchantment.DURABILITY, 7)));
     }
-
-    private void registerSword(Material type, String component, ItemStack item, List<Pair<Enchantment, Integer>> enchantments) {
-        SlimefunItemStack is = new SlimefunItemStack(component + "_SWORD", type, "&r" + ChatUtils.humanize(component) + " Sword");
+    
+    private void registerSwordNamed(Material type, String component, ItemStack item, List<Pair<Enchantment, Integer>> enchantments) {
+    	String humanizedComponent = SlimefunItem.getByID(component).getItemName();
+        SlimefunItemStack is = new SlimefunItemStack(component + "_SWORD", type, "&r" + humanizedComponent + "剑");
 
         for (Pair<Enchantment, Integer> enchantment : enchantments) {
             is.addUnsafeEnchantment(enchantment.getFirstValue(), enchantment.getSecondValue());
@@ -87,7 +87,25 @@ public class ExtraGear extends JavaPlugin implements SlimefunAddon {
 
         researchId++;
 
-        Research research = new Research(new NamespacedKey(this, component.toLowerCase() + "_sword"), researchId, ChatUtils.humanize(component) + " Sword", 3);
+        Research research = new Research(new NamespacedKey(this, component.toLowerCase() + "_sword"), researchId, humanizedComponent + "剑", 3);
+        research.addItems(slimefunItem);
+        research.register();
+    }
+
+    private void registerSword(Material type, String component, ItemStack item, List<Pair<Enchantment, Integer>> enchantments) {
+    	String humanizedComponent = SlimefunItem.getByID(component + "_INGOT").getItemName().replace("锭", "");
+        SlimefunItemStack is = new SlimefunItemStack(component + "_SWORD", type, "&r" + humanizedComponent + "剑");
+
+        for (Pair<Enchantment, Integer> enchantment : enchantments) {
+            is.addUnsafeEnchantment(enchantment.getFirstValue(), enchantment.getSecondValue());
+        }
+
+        SlimefunItem slimefunItem = new SlimefunItem(category, is, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] { null, item, null, null, item, null, null, new ItemStack(Material.STICK), null });
+        slimefunItem.register(this);
+
+        researchId++;
+
+        Research research = new Research(new NamespacedKey(this, component.toLowerCase() + "_sword"), researchId, humanizedComponent + "剑", 3);
         research.addItems(slimefunItem);
         research.register();
     }
