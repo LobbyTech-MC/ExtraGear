@@ -87,13 +87,13 @@ public class ExtraGear extends JavaPlugin implements SlimefunAddon {
 
         researchId++;
 
-        Research research = new Research(new NamespacedKey(this, component.toLowerCase() + "_sword"), researchId, SlimefunItem.getByID(component + "_INGOT").getItemName().replace("锭", "") + "剑", 3);
+        Research research = new Research(new NamespacedKey(this, component.toLowerCase() + "_sword"), researchId, ChatUtils.humanize(component) + " Sword", 3);
         research.addItems(slimefunItem);
         research.register();
     }
 
     private void registerArmor(ArmorSet armorset, String component, ItemStack item, List<Pair<Enchantment, Integer>> enchantments) {
-        String humanizedComponent = SlimefunItem.getByID(component + "_INGOT").getItemName().replace("锭", "");
+        String humanizedComponent = SlimefunItem.getByID(component).getItemName();
         SlimefunItemStack[] armor = { new SlimefunItemStack(component + "_HELMET", armorset.getHelmet(), "&f" + humanizedComponent + "头盔"),
                 new SlimefunItemStack(component + "_CHESTPLATE", armorset.getChestplate(), "&f" + humanizedComponent + "胸甲"),
                 new SlimefunItemStack(component + "_LEGGINGS", armorset.getLeggings(), "&f" + humanizedComponent + "护腿"),
